@@ -12,6 +12,6 @@
 
   
 
-			## Deployment Architecture - Multi Region - Cross Region Resiliency
+##                 Deployment Architecture - Multi Region - Cross Region Resiliency
 
 ![alt text](https://github.com/Antonio-Redondo/notejam-aws/blob/main/notejam-architecture-diagram.png)
