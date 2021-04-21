@@ -1,8 +1,8 @@
-# notejam-aws
+# Notejam-aws
 
 
 
-## Advantages of the new arquitecture
+## <ins>Advantages of the new arquitecture</ins>
 
 ### • Security  
 ### • High Availability    
@@ -10,5 +10,6 @@
 ### • Cost Optimization    
 ### • Automatic deployment    
 
+## Deployment Architecture - Multi Region - Cross Region Resiliency
 
 ![alt text](https://github.com/Antonio-Redondo/notejam-aws/blob/main/notejam-architecture-diagram.png)
