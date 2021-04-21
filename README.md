@@ -2,7 +2,8 @@
 
 
 
-##Goal:
+
+## Goal:
 <br />
 Create a pilot for one of the company’s applications in the public cloud.
 <br />
