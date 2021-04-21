@@ -9,6 +9,7 @@
 ### • Fault Tolerance    
 ### • Cost Optimization    
 ### • Automatic deployment  
+### • Scalability
 <br /> 
 <br /> 
 <br /> 
