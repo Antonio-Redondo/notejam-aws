@@ -22,6 +22,7 @@ Create a pilot for one of the company’s applications in the public cloud.
 ### • Backups & Disaster Recovery
 ### • CI-/CD integration
 ### • Monitoring & Operations
+### • IAC (Infrastructure As Code)
 
 
 <br /> 
