@@ -10,6 +10,12 @@
 ### • Cost Optimization    
 ### • Automatic deployment  
 ### • Scalability
+### • Environments & Stages
+### • Backups & Disaster Recovery
+### • CI-/CD integration
+### • Monitoring & Operations
+
+
 <br /> 
 <br /> 
 <br /> 
