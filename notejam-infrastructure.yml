@@ -28,6 +28,11 @@ Parameters:
     Default: 0.0.0.0/0
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+  DomainName:
+    Type: String
+    Description: The domain name.
+    Default: myexample.com
+ 
 Mappings:
   AWSInstanceType2Arch:
     t2.nano:
@@ -207,6 +212,90 @@ Resources:
         UnhealthyThreshold: '5'
         Interval: '30'
         Timeout: '5'
+  # Enable certificate if needed 
+  #ACMCertificate: 
+  #  Type: "AWS::CertificateManager::Certificate"
+  #  Properties: 
+  #    DomainName: !Ref DomainName
+  #    CertificateTransparencyLoggingPreference: DISABLED
+  #    DomainValidationOptions:
+  #          - DomainName: www.myexample.com
+  #            HostedZoneId: Z0791976VBGQ6Y9NKZSV
+  #    ValidationMethod: DNS 
+      
+  CloudFront:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        WebACLId: 
+            Ref: "MyWebACL"
+        #We can add CNAMES for the cloudfront distribution e.g www.notejam.conm
+        #Aliases:
+         #   - !Ref DomainName
+        Origins:
+          - DomainName: !GetAtt [ElasticLoadBalancer, DNSName]
+            Id: Example-ELB
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+              OriginSSLProtocols:
+                - TLSv1.2
+        Enabled: 'true'
+        DefaultCacheBehavior:
+          TargetOriginId: Example-ELB
+          ViewerProtocolPolicy: allow-all
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+       # If we enable alternate names we will need to associate a trusted certificate
+       # ViewerCertificate:
+       #   AcmCertificateArn: !Ref ACMCertificate
+       #  MinimumProtocolVersion: TLSv1
+       #   SslSupportMethod: sni-only
+        Restrictions: 
+            GeoRestriction: 
+                RestrictionType: "whitelist"
+                Locations: 
+                    - "US"
+                    - "ES"
+                    - "NL"
+                    - "BE"
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: 'true'
+  MyWebACL:
+    Type: "AWS::WAF::WebACL"
+    Properties: 
+        Name: "WebACL with one rule"
+        DefaultAction: 
+            Type: "ALLOW"
+        MetricName: "MyWebACL"
+        Rules: 
+            - 
+                Action: 
+                    Type: "BLOCK"
+                Priority: 1
+                RuleId: 
+                    Ref: "MyIPSetRule"  
+
+  MyIPSetRule: 
+    Type: "AWS::WAF::Rule"
+    Properties: 
+        Name: "MyIPSetRule"
+        MetricName: "MyIPSetRule"
+        Predicates: 
+            - 
+                DataId: 
+                    Ref: "MyIPSetBlacklist"
+                Negated: false
+                Type: "IPMatch"  
+  MyIPSetBlacklist: 
+    Type: "AWS::WAF::IPSet"
+    Properties: 
+        Name: "IPSet for blacklisted IP adresses"
+        IPSetDescriptors: 
+            -  
+                Type: "IPV4"
+                Value: "192.0.2.44/32"
+            - 
+                Type: "IPV4"
+                Value: "192.0.7.0/24"                
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
