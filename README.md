@@ -1,8 +1,10 @@
 # Notejam-aws
 
+
+
 ##Goal:
 <br />
-Create a pilot for one of the company’s applications in the public cloud
+Create a pilot for one of the company’s applications in the public cloud.
 <br />
 <br />
 
